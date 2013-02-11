@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>ajax test</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.imageview').click(function(){
+    $('.debug').text("success");
+    var containerDiv = $(this);
+    var imageId = $(containerDiv).attr('data-imageid');
+    var imgControl = $(this).find('img').first();
+
+    $.getJSON('viewdo.php', {SelectedImageId: imageId}, function(json){
+      $('#photo1').attr('src', json.url1);
+      $('#photo2').attr('src', json.url2);
+      $('#leftplace').attr('data-imageid', json.newImageId1);
+      $('#rightplace').attr('data-imageid', json.newImageId2);
+    });
+  });
+});
+</script>
+<style type="text/css"></style>
+</head>
+<body>
+<div class="debug"></div>
+<div id="leftplace" class="imageview" data-imageid=1>
+  <img src="../1.jpg" alt="" id="photo1"></div>
+<div id="rightplace" class="imageview" data-imageid=2>
+  <img src="../2.jpg" alt="" id="photo2"></div></div>
+</body>
+</html>
