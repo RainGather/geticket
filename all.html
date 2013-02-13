@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TEDxMoonLake报名</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+      var fname, ftel, femail, fqq, fsex, fwork, fwhereknow;
+      //var qArr[];
+      $('#infoSub').click(function(){
+        fname = $("#infoForm").find("[name='name']").val();
+        ftel = $("#infoForm").find('[name="tel"]').val();
+        femail = $("#infoForm").find('[name="email"]').val();
+        fqq = $("#infoForm").find('[name="qq"]').val();
+        fsex = $("input[name='sex']:checked").val();
+        fwork = $("#infoForm").find('[name="work"]').val();
+        fwhereknow = $("#infoForm").find('[name="whereknow"]').val();
+        alert(fsex);
+        $.getJSON('alldo.php', {name:fname, tel:ftel, email:femail, qq:fqq, sex:fsex, work:fwork, whereknow:fwhereknow}, function(json){
+          alert(json.name);
+        });
+        $('#infoForm').slideToggle(1000);
+      });
+      $('#step1').click(function(){
+        $('#infoForm').slideToggle(1000);
+      });
+      $('#step2').click(function(){
+        $('#question').slideToggle(1000);
+      });
+      // $('.imageview').click(function(){
+      //   //$('.debug').text("success");
+      //   var containerDiv = $(this);
+      //   var imageId = $(containerDiv).attr('data-imageid');
+      //   var imgControl = $(this).find('img').first();
+
+      //   $.getJSON('viewdo.php', {SelectedImageId: imageId}, function(json){
+      //     $('#photo1').attr('src', json.url1);
+      //     $('#photo2').attr('src', json.url2);
+      //     $('#leftplace').attr('data-imageid', json.newImageId1);
+      //     $('#rightplace').attr('data-imageid', json.newImageId2);
+      //   });
+      //});
+    });
+    </script>
+
+    <!-- Le styles -->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/self.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 300px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+
+    </style>
+    <link href="../css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../ico/favicon.png">
+  </head>
+
+  <body>
+    <div class="container" id="allForm">
+      <div class="hero-unit">
+        <h1>TEDxMoonLake报名页面</h1>
+        <p>请认真填写以下内容</p>
+      </div>
+
+      <div class="navbar">
+        <div class="navbar-inner" id="step1">
+          <a class="brand" href="#">STEP 1</a>
+        </div>
+      </div>
+
+      <div class="container" id="infoForm">
+        <div class="form-signin">
+          <h2 class="form-signin-heading">请填写报名表</h2>
+          <input name="name" type="text" class="input-block-level" placeholder="姓名">
+          <input name="tel" type="text" class="input-block-level" placeholder="手机号">
+          <input name="email" type="text" class="input-block-level" placeholder="Email">
+          <input name="qq" type="text" class="input-block-level" placeholder="QQ">
+          <input name="work" type="text" class="input-block-level" placeholder="工作类型">
+          <input name="whereknow" type="text" class="input-block-level" placeholder="从何处知道TEDxMoonLake的活动？">
+          <label class="radio">
+            <input type="radio" name="sex" value=1 />男
+          </label>
+          <label class="radio">
+            <input type="radio" name="sex" value=2 />女
+          </label>
+          <button class="btn btn-large btn-primary" id="infoSub">下一步</button>
+        </div>
+      </div> <!-- /container -->
+
+      <div class="navbar">
+        <div class="navbar-inner" id="step2">
+          <a class="brand" href="#">STEP 2</a>
+        </div>
+      </div>
+
+      <div class="container" id="question">
+        <h4 id="qCont">question here</h4>
+        <div class="thumbnails" id="qThumb">
+          <li class="span3" id="holder1">
+            <a href="#" class="thumbnail">
+              <img src="./default.jpg" id="photo1">
+            </a>
+          </li>
+          <li class="span3" id="holder2">
+            <a href="#" class="thumbnail">
+              <img src="./default.jpg" id="photo2">
+            </a>
+          </li>
+          <li class="span3" id="holder3">
+            <a href="#" class="thumbnail">
+              <img src="./default.jpg" id="photo3">
+            </a>
+          </li>
+          <li class="span3" id="holder4">
+            <a href="#" class="thumbnail">
+              <img src="./default.jpg" id="photo4">
+            </a>
+          </li>
+          <li class="span3" id="holder5">
+            <a href="#" class="thumbnail">
+              <img src="./default.jpg" id="photo5">
+            </a>
+          </li>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap-transition.js"></script>
+    <script src="../js/bootstrap-alert.js"></script>
+    <script src="../js/bootstrap-modal.js"></script>
+    <script src="../js/bootstrap-dropdown.js"></script>
+    <script src="../js/bootstrap-scrollspy.js"></script>
+    <script src="../js/bootstrap-tab.js"></script>
+    <script src="../js/bootstrap-tooltip.js"></script>
+    <script src="../js/bootstrap-popover.js"></script>
+    <script src="../js/bootstrap-button.js"></script>
+    <script src="../js/bootstrap-collapse.js"></script>
+    <script src="../js/bootstrap-carousel.js"></script>
+    <script src="../js/bootstrap-typeahead.js"></script>
+
+  </body>
+</html>
