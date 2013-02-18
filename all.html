@@ -9,28 +9,66 @@
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
     <script type="text/javascript">
+    var mydata = new Object();
+    var alljson = new Object();
+    alljson.s2=[];
+    mydata.qid = 0;
+
+    function addQ(jdata){
+      $('#qCont').text(jdata.question);
+      $('#qThumb').append("<div id=\"jsDiv\"></div>");
+      for (i=0; i<jdata.cont; i++){
+        var str = "<li class=\"span3\"><img class=\"thumbnailClick thumbnailFocus\" src=\"./"+jdata.answer+"/"+i+".jpg\" id=\"photo"+i+"\" value='0'></li>";
+        $('#jsDiv').append(str);
+      }
+      $('.thumbnailClick').click(function(){
+        if ($(this).attr('value') == 0){
+          $(this).addClass('thumbnailClicked');
+          $(this).removeClass('thumbnailFocus');
+          $(this).attr('value', '1');
+        }else if($(this).attr('value') == 1){
+          $(this).removeClass('thumbnailClicked');
+          $(this).addClass('thumbnailFocus');
+          $(this).attr('value', '0');
+        }
+      });
+      mydata.qid++;
+    }
+
     $(document).ready(function(){
-      var fname, ftel, femail, fqq, fsex, fwork, fwhereknow;
-      //var qArr[];
       $('#infoSub').click(function(){
-        fname = $("#infoForm").find("[name='name']").val();
-        ftel = $("#infoForm").find('[name="tel"]').val();
-        femail = $("#infoForm").find('[name="email"]').val();
-        fqq = $("#infoForm").find('[name="qq"]').val();
-        fsex = $("input[name='sex']:checked").val();
-        fwork = $("#infoForm").find('[name="work"]').val();
-        fwhereknow = $("#infoForm").find('[name="whereknow"]').val();
-        alert(fsex);
-        $.getJSON('alldo.php', {name:fname, tel:ftel, email:femail, qq:fqq, sex:fsex, work:fwork, whereknow:fwhereknow}, function(json){
-          alert(json.name);
+        alljson.fname = $("#infoForm").find("[name='name']").val();
+        alljson.ftel = $("#infoForm").find('[name="tel"]').val();
+        alljson.femail = $("#infoForm").find('[name="email"]').val();
+        alljson.fqq = $("#infoForm").find('[name="qq"]').val();
+        alljson.fsex = $("input[name='sex']:checked").val();
+        alljson.fwork = $("#infoForm").find('[name="work"]').val();
+        alljson.fwhereknow = $("#infoForm").find('[name="whereknow"]').val();
+        //alert(fsex);
+        // $.getJSON('alldo.php', {name:fname, tel:ftel, email:femail, qq:fqq, sex:fsex, work:fwork, whereknow:fwhereknow}, function(json){
+        //   alert(json.name);
+        // });
+        $.getJSON('getQ.php', function(json){
+          mydata.json = json;
+          addQ(mydata.json[mydata.qid]);
         });
         $('#infoForm').slideToggle(1000);
+        $(this).hide();
       });
-      $('#step1').click(function(){
-        $('#infoForm').slideToggle(1000);
-      });
-      $('#step2').click(function(){
-        $('#question').slideToggle(1000);
+      
+      $('#picSub').click(function(){
+        if (mydata.qid >= mydata.json.length) {
+          $('#question').slideToggle(1000);
+          $(this).hide();
+        }else{
+          for (i=0; i<mydata.json[mydata.qid].cont; i++)
+          {
+            alljson.s2[mydata.qid]=[];
+            alljson.s2[mydata.qid][i] = $('#photo'+i).val();
+          }
+          $('#jsDiv').remove();
+          addQ(mydata.json[mydata.qid]);
+        }
       });
       // $('.imageview').click(function(){
       //   //$('.debug').text("success");
@@ -102,13 +140,13 @@
   <body>
     <div class="container" id="allForm">
       <div class="hero-unit">
-        <h1>TEDxMoonLake报名页面</h1>
+        <h1>TEDxMoonLake观众报名页面</h1>
         <p>请认真填写以下内容</p>
       </div>
 
       <div class="navbar">
         <div class="navbar-inner" id="step1">
-          <a class="brand" href="#">STEP 1</a>
+          <a class="brand" href="#">STEP 1/3</a>
         </div>
       </div>
 
@@ -127,44 +165,29 @@
           <label class="radio">
             <input type="radio" name="sex" value=2 />女
           </label>
-          <button class="btn btn-large btn-primary" id="infoSub">下一步</button>
+          <div align="right">
+            <button class="btn btn-large btn-primary" id="infoSub">下一步</button>
+          </div>
         </div>
       </div> <!-- /container -->
 
       <div class="navbar">
         <div class="navbar-inner" id="step2">
-          <a class="brand" href="#">STEP 2</a>
+          <a class="brand" href="#">STEP 2/3</a>
         </div>
       </div>
 
       <div class="container" id="question">
         <h4 id="qCont">question here</h4>
-        <div class="thumbnails" id="qThumb">
-          <li class="span3" id="holder1">
-            <a href="#" class="thumbnail">
-              <img src="./default.jpg" id="photo1">
-            </a>
-          </li>
-          <li class="span3" id="holder2">
-            <a href="#" class="thumbnail">
-              <img src="./default.jpg" id="photo2">
-            </a>
-          </li>
-          <li class="span3" id="holder3">
-            <a href="#" class="thumbnail">
-              <img src="./default.jpg" id="photo3">
-            </a>
-          </li>
-          <li class="span3" id="holder4">
-            <a href="#" class="thumbnail">
-              <img src="./default.jpg" id="photo4">
-            </a>
-          </li>
-          <li class="span3" id="holder5">
-            <a href="#" class="thumbnail">
-              <img src="./default.jpg" id="photo5">
-            </a>
-          </li>
+        <div class="thumbnails" id="qThumb"></div>
+        <div align="right" >
+          <button class="btn btn-large btn-primary" id="picSub">下一步</button>
+        </div>
+      </div>
+
+      <div class="navbar">
+        <div class="navbar-inner" id="step3">
+          <a class="brand" href="#">STEP 3/3</a>
         </div>
       </div>
 
@@ -173,19 +196,5 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../js/jquery.js"></script>
-    <script src="../js/bootstrap-transition.js"></script>
-    <script src="../js/bootstrap-alert.js"></script>
-    <script src="../js/bootstrap-modal.js"></script>
-    <script src="../js/bootstrap-dropdown.js"></script>
-    <script src="../js/bootstrap-scrollspy.js"></script>
-    <script src="../js/bootstrap-tab.js"></script>
-    <script src="../js/bootstrap-tooltip.js"></script>
-    <script src="../js/bootstrap-popover.js"></script>
-    <script src="../js/bootstrap-button.js"></script>
-    <script src="../js/bootstrap-collapse.js"></script>
-    <script src="../js/bootstrap-carousel.js"></script>
-    <script src="../js/bootstrap-typeahead.js"></script>
-
   </body>
 </html>

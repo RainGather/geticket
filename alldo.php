@@ -6,7 +6,7 @@ $tabarg="devarg";
 $tabq="devq";
 $arr = $_REQUEST;
 
-function my_json_encode($phparr) 
+function jsonEncode($phparr) 
 { 
   if(function_exists("json_encode")) 
   {
@@ -22,6 +22,6 @@ function my_json_encode($phparr)
 
 mysql_query("INSERT INTO ".$tabinfo." (name, tel, email, qq, sex, regip, work, whereknow) VALUES ('".$arr['name']."', '".$arr['tel']."', '".$arr['email']."', '".$arr['qq']."', '".$arr['sex']."', '".$_SERVER['REMOTE_ADDR']."', '".$arr['work']."', '".$arr['whereknow']."')");
 
-$myjson = my_json_encode($arr); 
+$myjson = jsonEncode($arr); 
 echo $myjson;
 ?>
